@@ -12,6 +12,15 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 """
 
+import csv
+from collections import Counter, defaultdict
+
+def read_csv():
+    rows = []
+    with open('data.csv', 'r') as file:
+        for row in csv.reader(file, delimiter='\t'):
+            rows.append(row)
+    return rows
 
 def pregunta_01():
     """
@@ -21,8 +30,8 @@ def pregunta_01():
     214
 
     """
-    return
-
+    rows = read_csv()
+    return sum([int(x[1]) for x in rows])
 
 def pregunta_02():
     """
@@ -38,9 +47,10 @@ def pregunta_02():
         ("E", 14),
     ]
 
-    """
-    return
 
+    """
+
+    return sorted((Counter([x[0] for x in read_csv()])).items())
 
 def pregunta_03():
     """
@@ -57,8 +67,11 @@ def pregunta_03():
     ]
 
     """
-    return
+    group = defaultdict(int)
 
+    for row in read_csv():
+        group[row[0]] += int(row[1])
+    return sorted(group.items())
 
 def pregunta_04():
     """
@@ -82,8 +95,11 @@ def pregunta_04():
     ]
 
     """
-    return
+    group = defaultdict(int)
 
+    for row in read_csv():
+        group[row[2].split('-')[1]] += 1
+    return sorted(group.items())
 
 def pregunta_05():
     """
@@ -100,8 +116,15 @@ def pregunta_05():
     ]
 
     """
-    return
+    rows = read_csv()
+    group = defaultdict(lambda: ['-inf', 'inf'])
 
+    for row in rows: # O(n)
+        if float(row[1]) > float(group[row[0]][0]):
+            group[row[0]][0] = row[1]
+        if float(row[1]) < float(group[row[0]][1]):
+            group[row[0]][1] = row[1]
+    return sorted(group.items())
 
 def pregunta_06():
     """
@@ -125,8 +148,21 @@ def pregunta_06():
     ]
 
     """
-    return
+    rows = read_csv()
 
+    group = {}
+
+    for row in rows:
+        items = row.split(',')
+        for item in items:
+            [key, value] = item.split(':')
+            if key not in group:
+                group[key] = [int(value), int(value)]
+            else:
+                if int(value) > group[key][0]:
+                    group[key][0] = int(value)
+                if int(value) < group[key][1]:
+                    group[key][1] = int(value)
 
 def pregunta_07():
     """
@@ -149,8 +185,14 @@ def pregunta_07():
     ]
 
     """
-    return
+    rows = read_csv()
 
+    group = defaultdict(list)
+
+    for row in rows:
+        group[row[1]].append(row[0])
+
+    return [(key, group[key]) for key in sorted(group.keys())]
 
 def pregunta_08():
     """
@@ -174,8 +216,14 @@ def pregunta_08():
     ]
 
     """
-    return
+    rows = read_csv()
 
+    group = defaultdict(list)
+
+    for row in rows:
+        group[row[1]].append(row[0])
+
+    return [(key, sorted(set(group[key]))) for key in sorted(group.keys())]
 
 def pregunta_09():
     """
@@ -197,8 +245,17 @@ def pregunta_09():
     }
 
     """
-    return
+    rows = read_csv()
 
+    group = defaultdict(int)
+
+    for row in rows:
+        items = row[4].split(',')
+        for item in items:
+            [key, _] = item.split(':')
+            group[key] += 1
+
+    return dict(sorted(group.items()))
 
 def pregunta_10():
     """
@@ -218,8 +275,15 @@ def pregunta_10():
 
 
     """
-    return
 
+    rows = read_csv()
+
+    result = []
+
+    for row in rows:
+        result.append((row[0], len(row[3].split(',')), len(row[4].split(','))))
+
+    return result
 
 def pregunta_11():
     """
@@ -239,8 +303,17 @@ def pregunta_11():
 
 
     """
-    return
 
+    rows = read_csv()
+
+    group = defaultdict(int)
+
+    for row in rows:
+        items = row[3].split(',')
+        for item in items:
+            group[item] += int(row[1])
+
+    return dict(sorted(group.items()))
 
 def pregunta_12():
     """
@@ -257,4 +330,15 @@ def pregunta_12():
     }
 
     """
-    return
+
+    rows = read_csv()
+
+    group = defaultdict(int)
+
+    for row in rows:
+        items = row[4].split(',')
+        for item in items:
+            [_, value] = item.split(':')
+            group[row[0]] += int(value)
+
+    return dict(sorted(group.items()))
