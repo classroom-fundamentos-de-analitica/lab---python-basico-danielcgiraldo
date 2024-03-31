@@ -124,7 +124,7 @@ def pregunta_05():
             group[row[0]][0] = row[1]
         if float(row[1]) < float(group[row[0]][1]):
             group[row[0]][1] = row[1]
-    return sorted([(key, value[0], value[1]) for (key, value) in group.items()])
+    return sorted([(key, int(value[0]), int(value[1])) for (key, value) in group.items()])
 
 def pregunta_06():
     """
@@ -164,7 +164,7 @@ def pregunta_06():
                 if int(value) < group[key][1]:
                     group[key][1] = int(value)
 
-    return sorted([(key, value[1], value[0]) for (key, value) in group.items()])
+    return sorted([(key, int(value[1]), int(value[0])) for (key, value) in group.items()])
 
 def pregunta_07():
     """
@@ -194,7 +194,7 @@ def pregunta_07():
     for row in rows:
         group[row[1]].append(row[0])
 
-    return [(key, group[key]) for key in sorted(group.keys())]
+    return [(int(key), group[key]) for key in sorted(group.keys())]
 
 def pregunta_08():
     """
@@ -225,7 +225,7 @@ def pregunta_08():
     for row in rows:
         group[row[1]].append(row[0])
 
-    return [(key, sorted(set(group[key]))) for key in sorted(group.keys())]
+    return [(int(key), sorted(set(group[key]))) for key in sorted(group.keys())]
 
 def pregunta_09():
     """
